@@ -13,8 +13,18 @@ include_once 'Ravinto.php';
  */
 class Ravinnot {
 
+    /**
+     *
+     * @var Ravinto[] 
+     */
     private $ravinnot = array();
 
+    /**
+     * 
+     * @param Ravinto $r1
+     * @param Ravinto $r2
+     * @return int
+     */
     public function jarjestaNimenMukaan($r1, $r2) {
         if ($r1->getNimi() == $r2->getNimi()) {
             return self::jarjestaMerkinMukaan($r1, $r2);
@@ -22,16 +32,31 @@ class Ravinnot {
         return strcmp($r1->getNimi(), $r2->getNimi());
     }
 
+    /**
+     * 
+     * @param Ravinto $r1
+     * @param Ravinto $r2
+     * @return int
+     */
     public function jarjestaMerkinMukaan($r1, $r2) {
         if ($r1->getMerkki() == $r2->getMerkki()) {
             return self::jarjestaKalorienMukaan($r1, $r2);
         }
     }
 
+    /**
+     * 
+     * @param Ravinto $r1
+     * @param Ravinto $r2
+     * @return int
+     */
     public function jarjestaKalorienMukaan($r1, $r2) {
         return strcmp($r1->getKalorit(), $r2->getKalorit());
     }
 
+    /**
+     * Hakee kaikki ravinnot tietokannasta taulukkoon
+     */
     public function alusta() {
         $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
         if (!$conn) {
@@ -50,21 +75,16 @@ class Ravinnot {
                     FROM ravinto AS r, ravinto_tyyppi AS rt 
                     WHERE r.tyyppi = rt.id";
         $tulos = mysqli_query($conn, $kysely);
-        
-        if(!$tulos){
+
+        if (!$tulos) {
             // TODO: tämä poistettava myöhemmin
-            die("Kysely: <br />". $kysely. "<br />ei tuottanut tuloksia. Tarkista kysely.");
+            die("Kysely: <br />" . $kysely . "<br />ei tuottanut tuloksia. Tarkista kysely.");
         }
-        
+
         while ($rivi = mysqli_fetch_array($tulos)) {
             $ravinto = new Ravinto(
-                    $rivi['r_id'], 
-                    $rivi['r_nimi'], 
-                    new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']), 
-                    $rivi['r_kalorit'], 
-                    $rivi['r_merkki'], 
-                    $rivi['r_kommentti']);
-            
+                    $rivi['r_id'], $rivi['r_nimi'], new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']), $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
+
             array_push($this->ravinnot, $ravinto);
         }
         mysqli_close($conn);
@@ -73,10 +93,19 @@ class Ravinnot {
         }
     }
 
+    /**
+     * 
+     * @return Ravinto[]
+     */
     public function getRavinnot() {
         return $this->ravinnot;
     }
 
+    /**
+     * 
+     * @param Ravinto[] $ravinnot
+     * @return \Liikka\Entity\Ravinnot
+     */
     public function setRavinnot($ravinnot) {
         $this->ravinnot = $ravinnot;
         return $this;
