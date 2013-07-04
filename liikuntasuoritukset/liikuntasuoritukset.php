@@ -22,6 +22,7 @@ include "../entity/Laji.php";
 
 
         <?php
+
         $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
         if (!$conn) {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
@@ -154,10 +155,18 @@ include "../entity/Laji.php";
 
 
     <div id ="liikuntasuoritukset">Tähän haun tulokset.</div>
+    
+    <script>
+    function microtime(get_as_float) {
+        var now = new Date().getTime() / 1000;
+        var s = parseInt(now, 10);
+        return (get_as_float) ? now : (Math.round((now - s) * 1000) / 1000) + ' ' + s;
+    }
+    </script>
     <script>
         function suodata() {
-            var time_start = <?php microtime(true);?>
-            alert(time_start);
+            var time_start = microtime(true);
+            
         
             var rajoitus = $("#rajoitus").val();
 
@@ -179,6 +188,8 @@ include "../entity/Laji.php";
                     },
             function(data) {
                 $("#liikuntasuoritukset").html(data);
+                var time_end = microtime(true);
+                //alert("Hakuun kului aikaa: " + (time_end - time_start));
             });
         }
     </script>

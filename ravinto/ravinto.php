@@ -1,21 +1,22 @@
 <?php
-
 /*
 
 
-use Liikka\Entity\Ravinnon_saannit;
-use Liikka\Entity\Ravinnon_saanti;
-use Liikka\Entity\ApuMetodit;
+  use Liikka\Entity\Ravinnon_saannit;
+  use Liikka\Entity\Ravinnon_saanti;
+  use Liikka\Entity\ApuMetodit;
 
 
 
 
-include_once '../Entity/Ravinnon_saannit.php';
-include_once '../Entity/Ravinnon_saanti.php';
-include_once '../Entity/ApuMetodit.php';*/
+  include_once '../Entity/Ravinnon_saannit.php';
+  include_once '../Entity/Ravinnon_saanti.php';
+  include_once '../Entity/ApuMetodit.php'; */
+
 use Liikka\Entity\Ravinnot;
 use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
+
 include_once '../Entity/Tyyppi.php';
 include_once '../Entity/Ravinto.php';
 include_once '../Entity/Ravinnot.php';
@@ -36,7 +37,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
     </head>
     <body>
-        <?php ?>
+<?php ?>
         <h1>Käyttäjän <?php echo $kayttaja ?> ravinnonsaanti:</h1>
         <h2>Suodata tuloksia</h2>
         <table>
@@ -135,7 +136,17 @@ $kayttaja = $_GET['kayttajanimi'];
 </table>
 
 <script>
+    function microtime(get_as_float) {
+        var now = new Date().getTime() / 1000;
+        var s = parseInt(now, 10);
+        return (get_as_float) ? now : (Math.round((now - s) * 1000) / 1000) + ' ' + s;
+    }
+</script>
+
+<script>
     function suodata_ravinnon_saanti() {
+        var time_start = microtime(true);
+
         var rajoitus = $("#rajoitus_ravinnon_saanti").val();
 
         var alku = $("#from").datepicker('getDate');
@@ -161,6 +172,8 @@ $kayttaja = $_GET['kayttajanimi'];
                 },
         function(data) {
             $("#ravinnon_saannit").html(data);
+            var time_end = microtime(true);
+            //alert("Hakuun kului aikaa: " + (time_end - time_start));
         });
     }
 </script>
