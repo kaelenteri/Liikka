@@ -5,12 +5,14 @@ use Liikka\Entity\Ravinto;
 use Liikka\Entity\Ravinnot;
 use Liikka\Entity\Ravinnon_saannit;
 use Liikka\Entity\Ravinnon_saanti;
+use Liikka\Entity\ApuMetodit;
 
 include_once '../Entity/Ravinto.php';
 include_once '../Entity/Ravinnot.php';
 include_once '../Entity/Tyyppi.php';
 include_once '../Entity/Ravinnon_saannit.php';
 include_once '../Entity/Ravinnon_saanti.php';
+include_once '../Entity/ApuMetodit.php';
 
 date_default_timezone_set('Europe/Helsinki');
 $kayttaja = $_GET['kayttajanimi'];
@@ -55,7 +57,7 @@ $kayttaja = $_GET['kayttajanimi'];
             <td>
                 <select id="rajoitus_ravinto" style="width: 100%">
 
-                    <option value="5">5</option>
+                    <option value="2">2</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -72,19 +74,6 @@ $kayttaja = $_GET['kayttajanimi'];
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     <h2>Ravinnot</h2>
     <?php
     $ravinnot = new Ravinnot();
@@ -95,8 +84,6 @@ $kayttaja = $_GET['kayttajanimi'];
         foreach ($ravinnot->getRavinnot() as $ravinto) {
             echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " . $ravinto->getTyyppi()->getNimi());
         }
-
-
         echo "</select>";
     }
     ?>
@@ -105,7 +92,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
     <?php
     $ravinnons = new Ravinnon_saannit();
-    $ravinnons->hae($kayttaja);
+    $ravinnons->hae($kayttaja, date("Y-m-d", strtotime("0000-00-00")), date("Y-m-d", strtotime("now")), 5);
     $ravinnons->jarjesta();
     ?>
     <table id="ravinnon_saannit_table">
@@ -125,13 +112,11 @@ $kayttaja = $_GET['kayttajanimi'];
             $rivi = "<tr id=\"" . $rs->getId() . "\">";
             $rivi .= "<td>" . date("d.m.Y", strtotime($rs->getPvm())) . "</td>";
             $rivi .= "<td>" . $rs->getRavinto()->getTyyppi() . "</td>";
-            $rivi .= "<td>" . $rs->getRavinto()->getNimi() . "</td>";
-            $rivi .= "<td>" . $rs->getRavinto()->getMerkki() . "</td>";
+            $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getNimi()) . "</td>";
+            $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getMerkki()) . "</td>";
             $rivi .= "<td>" . $rs->getMaara() . "</td>";
             $rivi .= "<td>" . $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100 . "</td>";
             $rivi .= "<td>" . $rs->getKommentti() . "</td>";
-
-
             $rivi.="</tr>";
             echo $rivi;
         }
@@ -142,21 +127,22 @@ $kayttaja = $_GET['kayttajanimi'];
 
     <script>
         function suodata_ruokailut() {
-            var rajoitus = $("#rajoitus_ruokailut").val();
+            /*var rajoitus = $("#rajoitus_ruokailut").val();
+             
+             var alku = $("#from").datepicker('getDate');
+             alku = $.datepicker.formatDate('yy-mm-dd', alku);
+             
+             var loppu = $("#to").datepicker('getDate');
+             loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
+             
+             var nimi = <?php echo json_encode($kayttaja); ?>;*/
 
-            var alku = $("#from").datepicker('getDate');
-            alku = $.datepicker.formatDate('yy-mm-dd', alku);
 
-            var loppu = $("#to").datepicker('getDate');
-            loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
+            var haku = <?php echo json_encode(serialize(array("nimi" => "make", "ika" => "23"))) ?>;
 
-            var nimi = <?php echo json_encode($kayttaja); ?>;
             $.post("suodata.php",
                     {
-                        nimi: nimi,
-                        alku: alku,
-                        loppu: loppu,
-                        rajoitus: rajoitus
+                        haku: haku
                     },
             function(data) {
                 $("#ruokailut").html(data);

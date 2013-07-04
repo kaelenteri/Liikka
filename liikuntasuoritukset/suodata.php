@@ -1,5 +1,4 @@
 <?php
-alert("das");
 $nimi = $_POST['nimi'];
 $alku = $_POST['alku'];
 $loppu = $_POST['loppu'];
