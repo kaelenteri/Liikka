@@ -1,0 +1,48 @@
+/* 
+    Document   : tyyli
+    Created on : 25.6.2013, 23:53:48
+    Author     : Make
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+    
+    
+}
+
+.kayttajataulukko{
+    border: 1px solid #003333;
+}
+
+#kayttajataulukko td{
+    padding: 3px;
+}
+
+.user{
+    border: 1px solid #003333;
+}
+.user:hover{
+    background-color: #3399ff;
+    
+}
+#liikuntasuoritukset table{
+    width: 600px;
+}
+
+#liikuntasuoritukset td{
+    border: 1px solid #0099ff;
+    padding: 3px;
+}
+
+#liikuntasuoritukset{
+    border-spacing: 0px;
+}
+
+#liikuntasuoritukset th{
+    background-color: #0099ff;
+    border: 1px solid black;
+    padding: 3px;
+}
+
