@@ -84,6 +84,16 @@ class Ravinnon_saannit {
         mysqli_close($conn);
 
     }
+    
+    public function jarjesta(){
+        usort($this->ravinnon_saannit, "self::jarjestaPvmMukaan");
+    }
+    
+    public function jarjestaPvmMukaan($rs1, $rs2){
+        return strcmp($rs1->getPvm(), $rs2->getPvm());
+    }
+    
+    
 
 }
 

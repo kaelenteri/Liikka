@@ -26,13 +26,13 @@ class Ravinnon_saanti {
 
     /**
      *
-     * @var Ravinto
+     * @var Ravinto $ravinto
      */
     private $ravinto;
 
     /**
      *
-     * @var $maara int 
+     * @var int $maara
      */
     private $maara;
     private $kommentti;
@@ -84,11 +84,11 @@ class Ravinnon_saanti {
  */
     public function getMaara() {
         $m = $this->maara;
-        return (int)$m;
+        return intval($m);
     }
 
     public function setMaara($maara) {
-        (int)$this->maara = $maara;
+        $this->maara = $maara;
         return $this;
     }
 

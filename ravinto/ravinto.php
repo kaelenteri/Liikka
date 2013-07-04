@@ -84,7 +84,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
 
 
-    
+
     <h2>Ravinnot</h2>
     <?php
     $ravinnot = new Ravinnot();
@@ -93,34 +93,53 @@ $kayttaja = $_GET['kayttajanimi'];
         echo "<select id=\"ravinto\">";
 
         foreach ($ravinnot->getRavinnot() as $ravinto) {
-            echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " .$ravinto->getTyyppi()->getNimi());
+            echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " . $ravinto->getTyyppi()->getNimi());
         }
 
 
         echo "</select>";
     }
     ?>
-    
+
     <br /><br />
-    <ul>
-        <?php 
-        $ravinnons = new Ravinnon_saannit();
-        $ravinnons->hae($kayttaja);
-        foreach ($ravinnons->getRavinnon_saannit() as $rs){
 
-            //echo var_dump($rs);
-            echo "<li>".
-                    $rs->getKayttajanimi(). ", " .
-                    utf8_encode($rs->getRavinto()->getNimi()) .", ".
-                    $rs->getRavinto()->getMerkki().",  ".
-                    $rs->getRavinto()->getTyyppi()."</li>";
+    <?php
+    $ravinnons = new Ravinnon_saannit();
+    $ravinnons->hae($kayttaja);
+    $ravinnons->jarjesta();
+    ?>
+    <table id="ravinnon_saannit_table">
+        <tr>
+            <td>Pvm</td>
+            <td>Tyyppi</td>
+            <td>Ravinto</td>
+            <td>Lisätieto</td>
+            <td>Määrä</td>
+            <td>Kalorit</td>
+            <td>Kommentti</td>
+
+        </tr>
+        <?php
+        foreach ($ravinnons->getRavinnon_saannit() as $rs) {
+            //var_dump($rs);
+            $rivi = "<tr id=\"" . $rs->getId() . "\">";
+            $rivi .= "<td>" . date("d.m.Y", strtotime($rs->getPvm())) . "</td>";
+            $rivi .= "<td>" . $rs->getRavinto()->getTyyppi() . "</td>";
+            $rivi .= "<td>" . $rs->getRavinto()->getNimi() . "</td>";
+            $rivi .= "<td>" . $rs->getRavinto()->getMerkki() . "</td>";
+            $rivi .= "<td>" . $rs->getMaara() . "</td>";
+            $rivi .= "<td>" . $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100 . "</td>";
+            $rivi .= "<td>" . $rs->getKommentti() . "</td>";
+
+
+            $rivi.="</tr>";
+            echo $rivi;
         }
-
         ?>
-        
-        
-    </ul>
-    
+
+
+    </table>
+
     <script>
         function suodata_ruokailut() {
             var rajoitus = $("#rajoitus_ruokailut").val();
