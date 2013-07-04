@@ -12,6 +12,7 @@ namespace Liikka\Entity;
  */
 class Liikuntasuoritus {
     private $ID;
+
     private $laji;
     private $kommentti;
     private $kesto;

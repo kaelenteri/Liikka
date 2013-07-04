@@ -1,18 +1,24 @@
 <?php
 
-use Liikka\Entity\Tyyppi;
-use Liikka\Entity\Ravinto;
-use Liikka\Entity\Ravinnot;
+/*
+
+
 use Liikka\Entity\Ravinnon_saannit;
 use Liikka\Entity\Ravinnon_saanti;
 use Liikka\Entity\ApuMetodit;
 
-include_once '../Entity/Ravinto.php';
-include_once '../Entity/Ravinnot.php';
-include_once '../Entity/Tyyppi.php';
+
+
+
 include_once '../Entity/Ravinnon_saannit.php';
 include_once '../Entity/Ravinnon_saanti.php';
-include_once '../Entity/ApuMetodit.php';
+include_once '../Entity/ApuMetodit.php';*/
+use Liikka\Entity\Ravinnot;
+use Liikka\Entity\Ravinto;
+use Liikka\Entity\Tyyppi;
+include_once '../Entity/Tyyppi.php';
+include_once '../Entity/Ravinto.php';
+include_once '../Entity/Ravinnot.php';
 
 date_default_timezone_set('Europe/Helsinki');
 $kayttaja = $_GET['kayttajanimi'];
@@ -55,7 +61,7 @@ $kayttaja = $_GET['kayttajanimi'];
         <tr>
             <td>Tuloksia</td>
             <td>
-                <select id="rajoitus_ravinto" style="width: 100%">
+                <select id="rajoitus_ravinnon_saanti" style="width: 100%">
 
                     <option value="2">2</option>
                     <option value="10">10</option>
@@ -69,7 +75,7 @@ $kayttaja = $_GET['kayttajanimi'];
         </tr>
 
     </table>
-    <button id="suodata_ravinto" value="Suodata">Näytä ruokailut</button>
+    <button id="suodata_ravinnon_saanti" value="Suodata">Näytä ruokailut</button>
     <div id ="ravinnon_saannit">Tähän tulee ruokailut.</div>
 
 
@@ -91,10 +97,11 @@ $kayttaja = $_GET['kayttajanimi'];
     <br /><br />
 
     <?php
-    $ravinnons = new Ravinnon_saannit();
-    $ravinnons->hae($kayttaja, date("Y-m-d", strtotime("0000-00-00")), date("Y-m-d", strtotime("now")), 5);
-    $ravinnons->jarjesta();
+    /* $ravinnons = new Ravinnon_saannit();
+      $ravinnons->hae($kayttaja, date("Y-m-d", strtotime("0000-00-00")), date("Y-m-d", strtotime("now")), 5);
+      $ravinnons->jarjesta(); */
     ?>
+    <!--
     <table id="ravinnon_saannit_table">
         <tr>
             <td>Pvm</td>
@@ -106,87 +113,95 @@ $kayttaja = $_GET['kayttajanimi'];
             <td>Kommentti</td>
 
         </tr>
-        <?php
-        foreach ($ravinnons->getRavinnon_saannit() as $rs) {
-            //var_dump($rs);
-            $rivi = "<tr id=\"" . $rs->getId() . "\">";
-            $rivi .= "<td>" . date("d.m.Y", strtotime($rs->getPvm())) . "</td>";
-            $rivi .= "<td>" . $rs->getRavinto()->getTyyppi() . "</td>";
-            $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getNimi()) . "</td>";
-            $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getMerkki()) . "</td>";
-            $rivi .= "<td>" . $rs->getMaara() . "</td>";
-            $rivi .= "<td>" . $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100 . "</td>";
-            $rivi .= "<td>" . $rs->getKommentti() . "</td>";
-            $rivi.="</tr>";
-            echo $rivi;
-        }
-        ?>
+    -->
+    <?php
+    /*
+      foreach ($ravinnons->getRavinnon_saannit() as $rs) {
+      //var_dump($rs);
+      $rivi = "<tr id=\"" . $rs->getId() . "\">";
+      $rivi .= "<td>" . date("d.m.Y", strtotime($rs->getPvm())) . "</td>";
+      $rivi .= "<td>" . $rs->getRavinto()->getTyyppi() . "</td>";
+      $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getNimi()) . "</td>";
+      $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getMerkki()) . "</td>";
+      $rivi .= "<td>" . $rs->getMaara() . "</td>";
+      $rivi .= "<td>" . $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100 . "</td>";
+      $rivi .= "<td>" . $rs->getKommentti() . "</td>";
+      $rivi.="</tr>";
+      echo $rivi;
+      } */
+    ?>
 
 
-    </table>
+</table>
 
-    <script>
-        function suodata_ruokailut() {
-            /*var rajoitus = $("#rajoitus_ruokailut").val();
-             
-             var alku = $("#from").datepicker('getDate');
-             alku = $.datepicker.formatDate('yy-mm-dd', alku);
-             
-             var loppu = $("#to").datepicker('getDate');
-             loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
-             
-             var nimi = <?php echo json_encode($kayttaja); ?>;*/
+<script>
+    function suodata_ravinnon_saanti() {
+        var rajoitus = $("#rajoitus_ravinnon_saanti").val();
+
+        var alku = $("#from").datepicker('getDate');
+        alku = $.datepicker.formatDate('yy-mm-dd', alku);
+
+        var loppu = $("#to").datepicker('getDate');
+        loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
+
+        var nimi = <?php echo json_encode($kayttaja); ?>;
 
 
-            var haku = <?php echo json_encode(serialize(array("nimi" => "make", "ika" => "23"))) ?>;
+        //var haku = <?php echo json_encode(serialize(array("nimi" => "make", "ika" => "23"))) ?>;
+        //var haku = "jahuu";
 
-            $.post("suodata.php",
-                    {
-                        haku: haku
-                    },
-            function(data) {
-                $("#ruokailut").html(data);
-            });
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $("#suodata_ruokailut").click(function() {
-                suodata_ruokailut();
-
-            });
+        $.post("suodata.php",
+                {
+                    haku: {
+                        nimi: nimi,
+                        alku: alku,
+                        loppu: loppu,
+                        rajoitus: rajoitus
+                    }
+                },
+        function(data) {
+            $("#ravinnon_saannit").html(data);
         });
-    </script>
+    }
+</script>
 
-    <script>
-        $(function() {
-            $("#from").datepicker({
-                defaultDate: "+0w",
-                changeMonth: true,
-                numberOfMonths: 1,
-                showWeek: true,
-                dateFormat: 'dd.mm.yy',
-                onClose: function(selectedDate) {
-                    $("#to").datepicker("option", "minDate", selectedDate);
-                }
-            });
-            var alku = new Date();
-            alku.setHours(-168);
-            $("#from").datepicker("setDate", alku);
-            $("#to").datepicker({
-                defaultDate: "+0w",
-                changeMonth: true,
-                numberOfMonths: 1,
-                showWeek: true,
-                dateFormat: 'dd.mm.yy',
-                onClose: function(selectedDate) {
-                    $("#from").datepicker("option", "maxDate", selectedDate);
-                }
-            });
-            var loppu = new Date();
-            $("#to").datepicker("setDate", loppu);
+<script>
+    $(document).ready(function() {
+        $("#suodata_ravinnon_saanti").click(function() {
+            suodata_ravinnon_saanti();
+
         });
-    </script>
+    });
+</script>
+
+<script>
+    $(function() {
+        $("#from").datepicker({
+            defaultDate: "+0w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            showWeek: true,
+            dateFormat: 'dd.mm.yy',
+            onClose: function(selectedDate) {
+                $("#to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        var alku = new Date();
+        alku.setHours(-168);
+        $("#from").datepicker("setDate", alku);
+        $("#to").datepicker({
+            defaultDate: "+0w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            showWeek: true,
+            dateFormat: 'dd.mm.yy',
+            onClose: function(selectedDate) {
+                $("#from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+        var loppu = new Date();
+        $("#to").datepicker("setDate", loppu);
+    });
+</script>
 </body>
 </html>

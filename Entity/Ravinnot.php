@@ -38,15 +38,29 @@ class Ravinnot {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
 
-        $tulos = mysqli_query($conn, "SELECT r.id AS r_id, r.nimi AS r_nimi, r.merkki AS r_merkki, r.kalorit AS r_kalorit, r.kommentti AS r_kommentti, rt.id AS rt_id, rt.nimi AS rt_nimi
+        $kysely = "SELECT r.id AS r_id, 
+                    r.nimi AS r_nimi, 
+                    r.merkki AS r_merkki, 
+                    r.kalorit AS r_kalorit, 
+                    r.kommentti AS r_kommentti, 
+                    rt.id AS rt_id, 
+                    rt.nimi AS rt_nimi,   
+                    rt.mittayksikko AS rt_mittayksikko, 
+                    rt.gr_ml AS rt_gr_ml 
                     FROM ravinto AS r, ravinto_tyyppi AS rt 
-                    WHERE r.tyyppi = rt.id");
+                    WHERE r.tyyppi = rt.id";
+        $tulos = mysqli_query($conn, $kysely);
+        
+        if(!$tulos){
+            // TODO: tämä poistettava myöhemmin
+            die("Kysely: <br />". $kysely. "<br />ei tuottanut tuloksia. Tarkista kysely.");
+        }
         
         while ($rivi = mysqli_fetch_array($tulos)) {
             $ravinto = new Ravinto(
                     $rivi['r_id'], 
                     $rivi['r_nimi'], 
-                    new Tyyppi($rivi['rt_id'], $rivi['rt_nimi']), 
+                    new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']), 
                     $rivi['r_kalorit'], 
                     $rivi['r_merkki'], 
                     $rivi['r_kommentti']);

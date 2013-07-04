@@ -156,6 +156,9 @@ include "../entity/Laji.php";
     <div id ="liikuntasuoritukset">Tähän haun tulokset.</div>
     <script>
         function suodata() {
+            var time_start = <?php microtime(true);?>
+            alert(time_start);
+        
             var rajoitus = $("#rajoitus").val();
 
             var alku = $("#from").datepicker('getDate');

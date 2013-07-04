@@ -7,8 +7,8 @@ use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
 use Liikka\Entity\ApuMetodit;
 
-include_once 'Ravinto.php';
-include_once 'Ravinnon_saanti.php';
+include_once '../Entity/Ravinto.php';
+include_once '../Entity/Ravinnon_saanti.php';
 include_once 'Tyyppi.php';
 include_once 'ApuMetodit.php';
 
@@ -72,7 +72,9 @@ class Ravinnon_saannit {
                 r.kalorit AS r_kalorit, 
                 r.kommentti AS r_kommentti, 
                 rt.id AS rt_id, 
-                rt.nimi AS rt_nimi 
+                rt.nimi AS rt_nimi, 
+                rt.mittayksikko as rt_mittayksikko, 
+                rt.gr_ml as rt_gr_ml 
                 FROM ravinnon_saanti AS rs, 
                 ravinto AS r, 
                 ravinto_tyyppi AS rt 
@@ -86,7 +88,7 @@ class Ravinnon_saannit {
         $tulos = $conn->query($kysely);
         
         while($rivi = $tulos->fetch_array(MYSQLI_ASSOC)){
-            $rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi']);
+            $rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
             $r = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $rt, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
             $rs = new Ravinnon_saanti($rivi['rs_id'], $rivi['rs_kayttajanimi'], $rivi['rs_pvm'], $r, $rivi['rs_maara'], $rivi['rs_kommentti']);
             /*echo var_dump($rs);

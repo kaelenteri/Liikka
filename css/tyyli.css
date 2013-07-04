@@ -46,3 +46,21 @@ root {
     padding: 3px;
 }
 
+table #ravinnon_saannit_table{
+    width: 600px;
+}
+
+#ravinnon_saannit_table td{
+    border: 1px solid #0099ff;
+    padding: 3px;
+}
+
+#ravinnon_saannit_table{
+    border-spacing: 0px;
+}
+
+#ravinnon_saannit_table th{
+    background-color: #0099ff;
+    border: 1px solid black;
+    padding: 3px;
+}
