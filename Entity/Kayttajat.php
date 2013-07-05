@@ -49,7 +49,7 @@ class Kayttajat {
      * @param string $kayttajanimi
      * @return \Liikka\Entity\Kayttaja|null 
      */
-    public function etsi($kayttajanimi) {
+    public static function etsi($kayttajanimi) {
 
         $kayttajanimi = ApuMetodit::muunnaJonoKyselyaVarten($kayttajanimi);
         $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
@@ -57,13 +57,15 @@ class Kayttajat {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
 
-        $kysely = "SELECT * kayttaja WHERE kayttajanimi = $kayttajanimi";
+        $kysely = "SELECT * FROM kayttaja WHERE kayttajanimi = $kayttajanimi";
         $tulos = mysqli_query($conn, $kysely);
 
-        if (mysqli_num_rows($tulos)) {
+        if (mysqli_num_rows($tulos) == 1) {
+            echo "<br/ ><br /> jjahuu <br/ ><br />";
             $rivi = $tulos->fetch_array(MYSQLI_ASSOC);
 
             $kayttaja = new Kayttaja($rivi['kayttajanimi'], $rivi['salasana'], $rivi['etunimi'], $rivi['sukunimi'], $rivi['pituus']);
+
             mysqli_close($conn);
             return $kayttaja;
         }
@@ -77,11 +79,14 @@ class Kayttajat {
      * @param string $salasana
      * @return boolean
      */
-    public function kirjautuminenOk($kayttajanimi, $salasana) {
+    public static function kirjautuminenOk($kayttajanimi, $salasana) {
+        
         /* @var $kayttaja Kayttaja */
-        $kayttaja = etsi($kayttajanimi);
+        $kayttaja = self::etsi($kayttajanimi);
         if ($kayttaja != NULL) {
-            if ($kayttaja->getSalasana() === $salasana) {
+            
+            if ($kayttaja->getSalasana() == $salasana) {
+                
                 return true;
             }
         }

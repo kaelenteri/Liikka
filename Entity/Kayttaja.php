@@ -43,6 +43,21 @@ class Kayttaja {
      * @var double $pituus
      */
     private $pituus;
+/**
+ * 
+ * @param string $kayttajanimi
+ * @param string $salasana
+ * @param string $etunimi
+ * @param string $sukunimi
+ * @param double $pituus
+ */
+    function __construct($kayttajanimi, $salasana, $etunimi, $sukunimi, $pituus) {
+        $this->kayttajanimi = $kayttajanimi;
+        $this->salasana = $salasana;
+        $this->etunimi = $etunimi;
+        $this->sukunimi = $sukunimi;
+        $this->pituus = $pituus;
+    }
 
     /**
      * 

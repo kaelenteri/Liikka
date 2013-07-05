@@ -1,7 +1,7 @@
 <?php
 
 use Liikka\Entity\ApuMetodit;
-include_once '../Entity/ApuMetodit.php';
+include_once '../../Entity/ApuMetodit.php';
 
 // paivays, ravinto_id, maara, kommentti, nimi
 $kommentti = $_POST['kommentti'];

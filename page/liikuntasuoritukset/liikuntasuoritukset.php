@@ -1,7 +1,14 @@
 <?php
 date_default_timezone_set('Europe/Helsinki');
 use Liikka\Entity\Laji;
-include "../entity/Laji.php";
+include "../../Entity/Laji.php";
+session_start();
+if($_SESSION['kirjautunut'] == false){
+    header('Location: ../login/login.php');
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,10 +26,10 @@ include "../entity/Laji.php";
         <title></title>
     </head>
     <body>
-
+        <a href="../logout/logout.php">Kirjaudu ulos</a>
+        <br />
 
         <?php
-
         $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
         if (!$conn) {
             die('Could not connect to MySQL: ' . mysqli_connect_error());

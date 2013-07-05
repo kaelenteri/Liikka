@@ -17,9 +17,9 @@ use Liikka\Entity\Ravinnot;
 use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
 
-include_once '../Entity/Tyyppi.php';
-include_once '../Entity/Ravinto.php';
-include_once '../Entity/Ravinnot.php';
+include_once '../../Entity/Tyyppi.php';
+include_once '../../Entity/Ravinto.php';
+include_once '../../Entity/Ravinnot.php';
 
 date_default_timezone_set('Europe/Helsinki');
 $kayttaja = $_GET['kayttajanimi'];

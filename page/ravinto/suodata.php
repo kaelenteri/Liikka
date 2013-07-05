@@ -2,7 +2,7 @@
 
 use Liikka\Entity\Ravinnon_saannit;
 
-include_once '../Entity/Ravinnon_saannit.php';
+include_once '../../Entity/Ravinnon_saannit.php';
 
 //echo $_POST['haku'];
 $haku = $_POST['haku'];
