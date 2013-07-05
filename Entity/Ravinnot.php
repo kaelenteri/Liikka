@@ -4,7 +4,9 @@ namespace Liikka\Entity;
 
 use Liikka\Entity\Ravinto;
 
+
 include_once 'Ravinto.php';
+
 
 /**
  * Description of Ruoat
