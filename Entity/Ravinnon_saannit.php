@@ -7,8 +7,8 @@ use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
 use Liikka\Entity\ApuMetodit;
 
-include_once '../Entity/Ravinto.php';
-include_once '../Entity/Ravinnon_saanti.php';
+include_once 'Ravinto.php';
+include_once 'Ravinnon_saanti.php';
 include_once 'Tyyppi.php';
 include_once 'ApuMetodit.php';
 

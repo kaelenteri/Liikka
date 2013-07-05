@@ -20,9 +20,12 @@ use Liikka\Entity\Tyyppi;
 include_once '../../Entity/Tyyppi.php';
 include_once '../../Entity/Ravinto.php';
 include_once '../../Entity/Ravinnot.php';
-
+session_start();
+if(!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false){
+    header('Location: ../login/login.php');
+}
 date_default_timezone_set('Europe/Helsinki');
-$kayttaja = $_GET['kayttajanimi'];
+$kayttajanimi = $_SESSION['kayttajanimi'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,8 +40,10 @@ $kayttaja = $_GET['kayttajanimi'];
 
     </head>
     <body>
+        <a href="../logout/logout.php">Kirjaudu ulos</a>
+        <br />
         <?php ?>
-        <h1>Käyttäjän <?php echo $kayttaja ?> ravinnonsaanti:</h1>
+        <h1>Käyttäjän <?php echo $kayttajanimi ?> ravinnonsaanti:</h1>
         <h2>Suodata tuloksia</h2>
         <table>
             <tr>
@@ -76,7 +81,7 @@ $kayttaja = $_GET['kayttajanimi'];
         </tr>
 
     </table>
-    <button id="suodata_ravinnon_saanti" value="Suodata">Näytä ruokailut</button>
+    <button id="suodata_ravinnon_saanti_button" value="Suodata">Näytä ruokailut</button>
     <div id="dialogi" title="Lisää ravinnon saanti">
 
 
@@ -124,7 +129,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
 
             </table>
-            <input type="hidden" name="nimi" value="<?php echo $_GET['kayttajanimi']; ?>"> 
+            <input type="hidden" name="nimi" value="<?php echo $kayttajanimi; ?>"> 
             <input type="submit" value="Lähetä" />
         </form>
 
@@ -133,7 +138,7 @@ $kayttaja = $_GET['kayttajanimi'];
     </div>
     <button id="lisaa">Lisää uusi</button>
 
-    <div id ="ravinnon_saannit">Tähän tulee ruokailut.</div>
+    <div id="ravinnon_saannit">Tähän tulee ruokailut.</div>
 
     <div id="testi">Tähän response</div>
 
@@ -209,7 +214,7 @@ $kayttaja = $_GET['kayttajanimi'];
         var loppu = $("#to").datepicker('getDate');
         loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
 
-        var nimi = <?php echo json_encode($kayttaja); ?>;
+        var nimi = <?php echo json_encode($kayttajanimi); ?>;
 
 
         //var haku = <?php echo json_encode(serialize(array("nimi" => "make", "ika" => "23"))) ?>;
@@ -234,7 +239,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
 <script>
     $(document).ready(function() {
-        $("#suodata_ravinnon_saanti").click(function() {
+        $("#suodata_ravinnon_saanti_button").click(function() {
             suodata_ravinnon_saanti();
 
         });
@@ -274,7 +279,7 @@ $kayttaja = $_GET['kayttajanimi'];
     /*
      $(document).ready(function() {
      $("#uusiB").click(function() {
-     var nimi = <?php echo json_encode($_GET['kayttajanimi']); ?>;
+     var nimi = <?php echo json_encode($kayttajanimi); ?>;
      var pvm = $("#pvm").val();
      var laji_id = $("#laji_uusi").val();
      var kesto = $("#kesto").val();

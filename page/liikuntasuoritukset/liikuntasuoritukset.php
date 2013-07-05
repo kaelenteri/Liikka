@@ -3,10 +3,10 @@ date_default_timezone_set('Europe/Helsinki');
 use Liikka\Entity\Laji;
 include "../../Entity/Laji.php";
 session_start();
-if($_SESSION['kirjautunut'] == false){
+if(!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false){
     header('Location: ../login/login.php');
 }
-
+$kayttajanimi = $_SESSION['kayttajanimi'];
 
 
 ?>
@@ -49,8 +49,8 @@ if($_SESSION['kirjautunut'] == false){
 
         usort($lajit, "sortLajit");
 
-        $nimi = $_GET['kayttajanimi'];
-        echo "Käyttäjän " . $nimi . " liikuntasuoritukset.";
+        
+        echo "Käyttäjän $kayttajanimi liikuntasuoritukset.";
         ?>
 
 
@@ -147,7 +147,7 @@ if($_SESSION['kirjautunut'] == false){
 
 
             </table>
-            <input type="hidden" name="nimi" value="<?php echo $_GET['kayttajanimi']; ?>"> 
+            <input type="hidden" name="nimi" value="<?php echo $kayttajanimi; ?>"> 
             <input type="submit" value="Lähetä" />
         </form>
 
@@ -183,7 +183,7 @@ if($_SESSION['kirjautunut'] == false){
             var loppu = $("#to").datepicker('getDate');
             loppu = $.datepicker.formatDate('yy-mm-dd', loppu);
 
-            var nimi = <?php echo json_encode($_GET['kayttajanimi']); ?>;
+            var nimi = <?php echo json_encode($kayttajanimi); ?>;
             var laji_id = $("#laji").val();
             $.post("suodata.php",
                     {
@@ -270,7 +270,7 @@ if($_SESSION['kirjautunut'] == false){
                         );
 
 
-                        //var nimi = <?php echo json_encode($_GET['kayttajanimi']); ?>;
+                        //var nimi = <?php echo json_encode($kayttajanimi); ?>;
                         /* var pvm = $("#pvm").val();
                          var laji_id = $("#laji_uusi").val();
                          var kesto = $("#kesto").val();
@@ -313,7 +313,7 @@ if($_SESSION['kirjautunut'] == false){
     <script>
         $(document).ready(function() {
             $("#uusiB").click(function() {
-                var nimi = <?php echo json_encode($_GET['kayttajanimi']); ?>;
+                var nimi = <?php echo json_encode($kayttajanimi); ?>;
                 var pvm = $("#pvm").val();
                 var laji_id = $("#laji_uusi").val();
                 var kesto = $("#kesto").val();
