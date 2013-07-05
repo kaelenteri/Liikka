@@ -255,8 +255,8 @@ include "../entity/Laji.php";
 
                         var form = $("#uusiAjax").serialize();
 
-                        $.post("lisaa_ls.php", form, function() {
-                            //alert("Onnistui");
+                        $.post("lisaa_ls.php", form, function(data) {
+                            alert(data);
                             suodata();
                             $("#uusiAjax")[0].reset();
                         }

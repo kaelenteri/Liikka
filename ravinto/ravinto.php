@@ -37,7 +37,7 @@ $kayttaja = $_GET['kayttajanimi'];
 
     </head>
     <body>
-<?php ?>
+        <?php ?>
         <h1>Käyttäjän <?php echo $kayttaja ?> ravinnonsaanti:</h1>
         <h2>Suodata tuloksia</h2>
         <table>
@@ -77,63 +77,117 @@ $kayttaja = $_GET['kayttajanimi'];
 
     </table>
     <button id="suodata_ravinnon_saanti" value="Suodata">Näytä ruokailut</button>
+    <div id="dialogi" title="Lisää ravinnon saanti">
+
+
+        <form id="uusiAjax" method="POST" action="lisaa_r.php">
+            <table>
+                <tr>
+                    <td>Päivämäärä</td>
+                    <td>
+                        <input type="date" id="paivays" name="pvm" value="<?php echo date("Y-m-d"); ?>"required title="Anna päivämäärä.">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ravinto</td>
+                    <td>
+
+
+                        <?php
+                        $ravinnot = new Ravinnot();
+                        $ravinnot->alusta();
+
+
+                        if (count($ravinnot->getRavinnot()) > 0) {
+                            echo "<select id=\"ravinto_id\" name=\"ravinto_id\">";
+
+                            foreach ($ravinnot->getRavinnot() as $ravinto) {
+                                echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " . $ravinto->getTyyppi()->getNimi());
+                            }
+                            echo "</select>";
+                        }
+                        ?>
+                    </td>
+                </tr> 
+                <tr>
+                    <td>Määrä (g tai ml)</td>
+                    <td>
+                        <input type="text" name="maara" value="100" maxlength="5" required pattern="^\d{1,5}$" title="Määrä grammoina tai millilitroina. 1-5 numeroa.">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kommentti</td>
+                    <td>
+                        <input type="text" id="kommentti" name="kommentti">
+                    </td>
+                </tr>
+
+
+            </table>
+            <input type="hidden" name="nimi" value="<?php echo $_GET['kayttajanimi']; ?>"> 
+            <input type="submit" value="Lähetä" />
+        </form>
+
+
+
+    </div>
+    <button id="lisaa">Lisää uusi</button>
+
     <div id ="ravinnon_saannit">Tähän tulee ruokailut.</div>
 
-
+    <div id="testi">Tähän response</div>
 
     <h2>Ravinnot</h2>
     <?php
-    $ravinnot = new Ravinnot();
-    $ravinnot->alusta();
-    if (count($ravinnot->getRavinnot()) > 0) {
-        echo "<select id=\"ravinto\">";
-
-        foreach ($ravinnot->getRavinnot() as $ravinto) {
-            echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " . $ravinto->getTyyppi()->getNimi());
-        }
-        echo "</select>";
-    }
     ?>
 
     <br /><br />
 
-    <?php
-    /* $ravinnons = new Ravinnon_saannit();
-      $ravinnons->hae($kayttaja, date("Y-m-d", strtotime("0000-00-00")), date("Y-m-d", strtotime("now")), 5);
-      $ravinnons->jarjesta(); */
-    ?>
-    <!--
-    <table id="ravinnon_saannit_table">
-        <tr>
-            <td>Pvm</td>
-            <td>Tyyppi</td>
-            <td>Ravinto</td>
-            <td>Lisätieto</td>
-            <td>Määrä</td>
-            <td>Kalorit</td>
-            <td>Kommentti</td>
-
-        </tr>
-    -->
-    <?php
-    /*
-      foreach ($ravinnons->getRavinnon_saannit() as $rs) {
-      //var_dump($rs);
-      $rivi = "<tr id=\"" . $rs->getId() . "\">";
-      $rivi .= "<td>" . date("d.m.Y", strtotime($rs->getPvm())) . "</td>";
-      $rivi .= "<td>" . $rs->getRavinto()->getTyyppi() . "</td>";
-      $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getNimi()) . "</td>";
-      $rivi .= "<td>" . utf8_encode($rs->getRavinto()->getMerkki()) . "</td>";
-      $rivi .= "<td>" . $rs->getMaara() . "</td>";
-      $rivi .= "<td>" . $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100 . "</td>";
-      $rivi .= "<td>" . $rs->getKommentti() . "</td>";
-      $rivi.="</tr>";
-      echo $rivi;
-      } */
-    ?>
 
 
 </table>
+
+<script>
+    $(document).ready(function() {
+
+        $("#dialogi").dialog({
+            autoOpen: false,
+            modal: true,
+            draggable: true,
+            width: 600,
+            buttons: {"Lisää": function() {
+
+
+                    var form = $("#uusiAjax").serialize();
+                    var jee = "Jee";
+
+                    $.post("lisaa_r.php", form, function(data) {
+                        alert(data);
+                        //$("#testi").html(data);
+                        suodata_ravinnon_saanti();
+
+                        $("#uusiAjax")[0].reset();
+                    }
+                    );
+
+
+                    $(this).dialog("close");
+                }, "Peruuta": function() {
+                    $("#uusiAjax")[0].reset();
+                    $(this).dialog("close");
+                }
+            },
+            title: "Lisää uusi ravinnon saanti",
+            show: {effect: 'clip', direction: "up"}
+
+        });
+        $("#lisaa").click(function() {
+            $("#dialogi").dialog('open');
+        });
+
+    });
+</script>
+
 
 <script>
     function microtime(get_as_float) {
@@ -216,5 +270,34 @@ $kayttaja = $_GET['kayttajanimi'];
         $("#to").datepicker("setDate", loppu);
     });
 </script>
+<script>
+    /*
+     $(document).ready(function() {
+     $("#uusiB").click(function() {
+     var nimi = <?php echo json_encode($_GET['kayttajanimi']); ?>;
+     var pvm = $("#pvm").val();
+     var laji_id = $("#laji_uusi").val();
+     var kesto = $("#kesto").val();
+     var kommentti = $("#kommentti");
+     
+     $.post("lisaa_ls.php",
+     {
+     nimi: nimi,
+     pvm: pvm,
+     laji_id: laji_id,
+     kesto: kesto,
+     kommentti: kommentti
+     },
+     function() {
+     
+     $("#dialogi").dialog("close");
+     });
+     
+     });
+     });
+     */
+</script>
 </body>
 </html>
+
+
