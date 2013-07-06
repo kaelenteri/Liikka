@@ -3,9 +3,13 @@
 namespace Liikka\Entity;
 
 use Liikka\Entity\Ravinto;
+use Liikka\Entity\Tyypit;
+use Liikka\Entity\Tyyppi;
 
 
 include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Tyyppi.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Tyypit.php";
 
 
 /**
@@ -84,8 +88,12 @@ class Ravinnot {
         }
 
         while ($rivi = mysqli_fetch_array($tulos)) {
+            $tyyppi = Tyypit::hae($rivi['rt_id']);
+            if ($tyyppi == null){
+                die("Ei voitu hakea ravinnon tyyppiä. Tietokannassa on joku rikki. Ota yhteyttä järjestelmänvalvojaan.");
+            }
             $ravinto = new Ravinto(
-                    $rivi['r_id'], $rivi['r_nimi'], new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']), $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
+                    $rivi['r_id'], $rivi['r_nimi'], $tyyppi, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
 
             array_push($this->ravinnot, $ravinto);
         }
@@ -97,7 +105,7 @@ class Ravinnot {
 
     /**
      * 
-     * @return Ravinto[]
+     * @return array
      */
     public function getRavinnot() {
         return $this->ravinnot;
@@ -105,7 +113,7 @@ class Ravinnot {
 
     /**
      * 
-     * @param Ravinto[] $ravinnot
+     * @param array
      * @return \Liikka\Entity\Ravinnot
      */
     public function setRavinnot($ravinnot) {
