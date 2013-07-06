@@ -51,6 +51,7 @@ public static function hae($id){
     if($tulos->num_rows == 1){
         $rivi = $tulos->fetch_array(MYSQLI_ASSOC);
         $tulos->free();
+         $conn->close();
         return new Tyyppi($rivi['id'], $rivi['nimi'], $rivi['mittayksikko'], $rivi['gr_ml']);
     }
     

@@ -120,6 +120,26 @@ class Ravinnot {
         $this->ravinnot = $ravinnot;
         return $this;
     }
+    
+    public static function etsi($id){
+    $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
+    if (!$conn) {
+        die('Could not connect to MySQL: ' . mysqli_connect_error());
+    }
+    
+    
+    $kysely = "SELECT * FROM ravinto WHERE id = $id";
+    $tulos = $conn->query($kysely);
+    if($tulos->num_rows != 1){
+        mysqli_close($conn);
+        die("Tietokannassa on jotain vikaa.");
+        return null;
+    }
+    mysqli_close($conn);
+    $rivi = $tulos->fetch_assoc();
+    $tyyppi = Tyypit::hae($rivi['tyyppi']);
+    return new Ravinto($rivi['id'], $rivi['nimi'], $tyyppi, $rivi['merkki'], $rivi['kalorit'], $rivi['kommentti']);
+    }
 
 }
 

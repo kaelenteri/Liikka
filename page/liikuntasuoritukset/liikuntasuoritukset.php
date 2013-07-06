@@ -1,15 +1,12 @@
 <?php
 
-date_default_timezone_set('Europe/Helsinki');
 
 use Liikka\Entity\Laji;
 
 include stream_resolve_include_path("../../Entity/Laji.php");
 
-session_start();
-if (!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false) {
-    header('Location: ../login/login.php');
-}
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/page/osiot/tarkista_kirjautuminen.php";
+
 $kayttajanimi = $_SESSION['kayttajanimi'];
 ?>
 <!DOCTYPE html>

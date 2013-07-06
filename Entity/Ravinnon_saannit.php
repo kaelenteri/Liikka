@@ -5,12 +5,16 @@ namespace Liikka\Entity;
 use Liikka\Entity\Ravinnon_saanti;
 use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
+use Liikka\Entity\Tyypit;
+use Liikka\Entity\Ravinnot;
 use Liikka\Entity\ApuMetodit;
 
-include_once $_SERVER['DOCUMENT_ROOT'] . "//Liikka/Entity/Ravinnon_saanti.php";
-include_once $_SERVER['DOCUMENT_ROOT'] . "//Liikka/Entity/ApuMetodit.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/Ravinnon_saanti.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/ApuMetodit.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/Tyyppi.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/Ravinto.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/Ravinnot.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/Entity/Tyypit.php";
 
 
 /*
@@ -93,8 +97,10 @@ class Ravinnon_saannit {
         $tulos = $conn->query($kysely);
 
         while ($rivi = $tulos->fetch_array(MYSQLI_ASSOC)) {
-            $rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
-            $r = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $rt, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
+            //$rt = Tyypit::hae($rivi['rt_id']);
+            $r = Ravinnot::etsi($rivi['rt_id']);
+            //$rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
+            //$r = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $rt, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
             $rs = new Ravinnon_saanti($rivi['rs_id'], $rivi['rs_kayttajanimi'], $rivi['rs_pvm'], $r, $rivi['rs_maara'], $rivi['rs_kommentti']);
 
             array_push($this->ravinnon_saannit, $rs);

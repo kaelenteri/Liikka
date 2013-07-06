@@ -10,11 +10,8 @@ include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinnot.php";
 
 
 
-session_start();
-if (!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false) {
-    header('Location: ../login/login.php');
-}
-date_default_timezone_set('Europe/Helsinki');
+include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/page/osiot/tarkista_kirjautuminen.php";
+
 $kayttajanimi = $_SESSION['kayttajanimi'];
 ?>
 <!DOCTYPE html>
