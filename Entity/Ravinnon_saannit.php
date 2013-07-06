@@ -8,8 +8,8 @@ use Liikka\Entity\Tyyppi;
 use Liikka\Entity\ApuMetodit;
 
 
-include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity//Ravinnon_saanti.php";
-include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity//ApuMetodit.php";
+include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity/Ravinnon_saanti.php";
+include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity/ApuMetodit.php";
 include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Tyyppi.php";
 include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
 
@@ -26,25 +26,26 @@ include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
  */
 class Ravinnon_saannit {
 
-    /* @var Ravinnon_saanti[] */
+    /* @var array */
     private $ravinnon_saannit;
 
     /**
      * 
-     * @return Ravinnon_saanti[]
+     * @return array
      */
     public function getRavinnon_saannit() {
         return $this->ravinnon_saannit;
     }
-
+/**
+ * 
+ * @param array $ravinnon_saannit
+ * @return \Liikka\Entity\Ravinnon_saannit
+ */
     public function setRavinnon_saannit($ravinnon_saannit) {
         $this->ravinnon_saannit = $ravinnon_saannit;
         return $this;
     }
 
-    function __construct() {
-        $this->setRavinnon_saannit(array());
-    }
 
     public function hae($kayttajanimi, $alku = "0000-00-00", $loppu = "3000-00-00", $rajoitus = 10) {
         //echo $alku, $loppu;
@@ -105,12 +106,14 @@ class Ravinnon_saannit {
         mysqli_close($conn);
 
     }
-    
+    /**
+     * Jarjestaa oliot pvm mukaan
+     */
     public function jarjesta(){
-        usort($this->ravinnon_saannit, "self::jarjestaPvmMukaan");
+        usort($this->ravinnon_saannit, "self::vertaaPvm");
     }
     
-    public function jarjestaPvmMukaan($rs1, $rs2){
+    public function vertaaPvm($rs1, $rs2){
         return strcmp($rs1->getPvm(), $rs2->getPvm());
     }
     

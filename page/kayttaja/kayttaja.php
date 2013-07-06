@@ -28,5 +28,6 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
         <h1>Käyttäjän <?php echo $kayttajanimi ?> käyttäjäsivu</h1>
         <p><a href="../liikuntasuoritukset/liikuntasuoritukset.php">Liikuntasuoritukset</a></p>
         <p><a href="../ravinto/ravinto.php">Ravinnon saanti</a></p>
+        <p><a href="../painonmittaukset/painonmittaukset.php">Painonmittaukset</a></p>
     </body>
 </html>

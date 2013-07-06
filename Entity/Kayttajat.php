@@ -21,13 +21,13 @@ class Kayttajat {
 
     /**
      *
-     * @var Kayttaja[] 
+     * @var array 
      */
     private $kayttajat;
 
     /**
      * 
-     * @return Kayttaja[]
+     * @return array
      */
     public function getKayttajat() {
         return $this->kayttajat;
@@ -61,7 +61,7 @@ class Kayttajat {
         $tulos = mysqli_query($conn, $kysely);
 
         if (mysqli_num_rows($tulos) == 1) {
-            echo "<br/ ><br /> jjahuu <br/ ><br />";
+            
             $rivi = $tulos->fetch_array(MYSQLI_ASSOC);
 
             $kayttaja = new Kayttaja($rivi['kayttajanimi'], $rivi['salasana'], $rivi['etunimi'], $rivi['sukunimi'], $rivi['pituus']);

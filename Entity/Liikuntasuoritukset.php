@@ -4,6 +4,7 @@ namespace Liikka\Entity;
 
 use Liikka\Entity\Laji;
 use Liikka\Entity\Liikuntasuoritus;
+use Liikka\Entity\ApuMetodit;
 
 include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Laji.php";
 include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Liikuntasuoritus.php";
@@ -40,13 +41,14 @@ class Liikuntasuoritukset {
         return $this;
     }
     
-    public function hae($kayttajanimi){
+    public function hae(Kayttaja $kayttaja){
         $liikuntasuoritukset = array();
         $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
         if (!$conn) {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
         
+        $kayttajanimi = $kayttaja->getKayttajanimi() ;
         $kayttajanimi = ApuMetodit::muunnaJonoKyselyaVarten($kayttajanimi);
         
         $kysely = "SELECT ls.id AS ls_id, 
@@ -63,7 +65,7 @@ class Liikuntasuoritukset {
             laji AS l 
             WHERE ls.laji_id = l.id 
             AND ls.kayttajanimi = $kayttajanimi";
-        $tulos = mysqli_query($conn, $kysely);
+        $tulos = $conn->query($kysely);
         
         if(mysqli_num_rows($tulos) > 0){
             

@@ -2,6 +2,12 @@
 
 namespace Liikka\Entity;
 
+use Liikka\Entity\Kayttaja;
+use Liikka\Entity\Laji;
+
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Kayttaja.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Laji.php";
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -22,39 +28,15 @@ class Liikuntasuoritus {
 
     /**
      *
-     * @var string 
+     * @var Kayttaja 
      */
-    private $kayttajanimi;
-
-    /**
-     * 
-     * @return string
-     */
-    public function getKayttajanimi() {
-        return $this->kayttajanimi;
-    }
-
-    /**
-     * 
-     * @param string $kayttajanimi
-     * @return \Liikka\Entity\Liikuntasuoritus
-     */
-    public function setKayttajanimi($kayttajanimi) {
-        $this->kayttajanimi = $kayttajanimi;
-        return $this;
-    }
+    private $kayttaja;
 
     /**
      *
      * @var Laji 
      */
     private $laji;
-
-    /**
-     *
-     * @var string 
-     */
-    private $kommentti;
 
     /**
      *
@@ -69,20 +51,17 @@ class Liikuntasuoritus {
     private $pvm;
 
     /**
-     * 
-     * @param int $id
-     * @param \Liikka\Entity\Laji $laji
-     * @param string $kommentti
-     * @param int $kesto
-     * @param string $pvm
+     *
+     * @var string 
      */
-    function __construct($id, $kayttajanimi, Laji $laji, $kommentti, $kesto, $pvm) {
+    private $kommentti;
+    function __construct($id, Kayttaja $kayttaja, Laji $laji, $kesto, $pvm, $kommentti) {
         $this->id = $id;
-        $this->kayttajanimi = $kayttajanimi;
+        $this->kayttaja = $kayttaja;
         $this->laji = $laji;
-        $this->kommentti = $kommentti;
         $this->kesto = $kesto;
         $this->pvm = $pvm;
+        $this->kommentti = $kommentti;
     }
 
     /**
@@ -172,6 +151,24 @@ class Liikuntasuoritus {
      */
     public function setKommentti($kommentti) {
         $this->kommentti = $kommentti;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Kayttaja
+     */
+    public function getKayttaja() {
+        return $this->kayttaja;
+    }
+
+    /**
+     * 
+     * @param \Liikka\Entity\Kayttaja $kayttaja
+     * @return \Liikka\Entity\Liikuntasuoritus
+     */
+    public function setKayttaja(Kayttaja $kayttaja) {
+        $this->kayttaja = $kayttaja;
         return $this;
     }
 
