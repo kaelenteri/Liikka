@@ -1,14 +1,16 @@
 <?php
+
 date_default_timezone_set('Europe/Helsinki');
+
 use Liikka\Entity\Laji;
+
 include "../../Entity/Laji.php";
+
 session_start();
-if(!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false){
+if (!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false) {
     header('Location: ../login/login.php');
 }
 $kayttajanimi = $_SESSION['kayttajanimi'];
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -49,7 +51,7 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
 
         usort($lajit, "sortLajit");
 
-        
+
         echo "Käyttäjän $kayttajanimi liikuntasuoritukset.";
         ?>
 
@@ -162,19 +164,19 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
 
 
     <div id ="liikuntasuoritukset">Tähän haun tulokset.</div>
-    
+
     <script>
-    function microtime(get_as_float) {
-        var now = new Date().getTime() / 1000;
-        var s = parseInt(now, 10);
-        return (get_as_float) ? now : (Math.round((now - s) * 1000) / 1000) + ' ' + s;
-    }
+        function microtime(get_as_float) {
+            var now = new Date().getTime() / 1000;
+            var s = parseInt(now, 10);
+            return (get_as_float) ? now : (Math.round((now - s) * 1000) / 1000) + ' ' + s;
+        }
     </script>
     <script>
         function suodata() {
             var time_start = microtime(true);
-            
-        
+
+
             var rajoitus = $("#rajoitus").val();
 
             var alku = $("#from").datepicker('getDate');
