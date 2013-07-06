@@ -5,8 +5,8 @@ namespace Liikka\Entity;
 use Liikka\Entity\Kayttaja;
 use Liikka\Entity\ApuMetodit;
 
-include_once 'Kayttaja.php';
-include_once 'ApuMetodit.php';
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Kayttaja.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/ApuMetodit.php";
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.

@@ -5,7 +5,7 @@ namespace Liikka\Entity;
 use Liikka\Entity\Ravinto;
 
 
-include_once 'Ravinto.php';
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
 
 
 /**

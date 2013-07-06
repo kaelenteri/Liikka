@@ -3,6 +3,8 @@
 namespace Liikka\Entity;
 
 use Liikka\Entity\Tyyppi;
+//var_dump(stream_resolve_include_path("../../Entity/Tyyppi.php"));
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Tyyppi.php";
 
 /**
  * Description of Ruoka

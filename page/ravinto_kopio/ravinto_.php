@@ -1,38 +1,38 @@
 
 <?php
+date_default_timezone_set('Europe/Helsinki');
 
 use Liikka\Entity\Ravinnot;
 use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
 
-
-include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinnot.php";
-
-
+include_once "../../Entity/Tyyppi.php";
+include_once "../../Entity/Ravinto.php";
+include_once '../../Entity/Ravinnot.php';
 
 session_start();
 if (!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false) {
     header('Location: ../login/login.php');
 }
-date_default_timezone_set('Europe/Helsinki');
+
 $kayttajanimi = $_SESSION['kayttajanimi'];
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
+
         <link rel="stylesheet" type="text/css" href="../css/tyyli.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
+        <title></title>
     </head>
     <body>
         <a href="../logout/logout.php">Kirjaudu ulos</a>
         <br />
-<?php ?>
+
         <h1>Käyttäjän <?php echo $kayttajanimi ?> ravinnonsaanti:</h1>
         <h2>Suodata tuloksia</h2>
 
@@ -100,7 +100,7 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
                             if (count($ravinnot->getRavinnot()) > 0) {
                                 echo "<select id=\"ravinto_id\" name=\"ravinto_id\">";
 
-                                foreach ($ravinnot->getRavinnot() as /* @var $ravinto Ravinto */ $ravinto) {
+                                foreach ($ravinnot->getRavinnot() as $ravinto) {
                                     echo utf8_encode("<option value=\"" . $ravinto->getId() . "\">" . $ravinto->getNimi() . ", " . $ravinto->getMerkki() . ", " . $ravinto->getTyyppi()->getNimi());
                                 }
                                 echo "</select>";
@@ -131,49 +131,16 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
 
         </div>
         <button id="lisaa">Lisää uusi</button>
-        <div id="rivi_lisatty"></div>
+
         <div id="ravinnon_saannit">Tähän tulee ruokailut.</div>
 
-        <script>
-            $(document).ready(function() {
+        <div id="testi">Tähän response</div>
 
-                $("#dialogi").dialog({
-                    autoOpen: false,
-                    modal: true,
-                    draggable: true,
-                    width: 600,
-                    buttons: {"Lisää": function() {
+        <h2>Ravinnot</h2>
+ 
 
+        <br /><br />
 
-                            var form = $("#uusiAjax").serialize();
-                            var jee = "Jee";
-
-                            $.post("lisaa_r.php", form, function(data) {
-                                alert(data);
-                                $("#rivi_lisatty").html(data);
-                                suodata_ravinnon_saanti();
-
-                                $("#uusiAjax")[0].reset();
-                            }
-                            );
-
-
-                            $(this).dialog("close");
-                        }, "Peruuta": function() {
-                            $("#uusiAjax")[0].reset();
-                            $(this).dialog("close");
-                        }
-                    },
-                    title: "Lisää uusi ravinnon saanti",
-                    show: {effect: 'clip', direction: "up"}
-
-                });
-                $("#lisaa").click(function() {
-                    $("#dialogi").dialog('open');
-                });
-
-            });
-        </script>
 
 
         <script>
@@ -198,10 +165,6 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
 
                 var nimi = <?php echo json_encode($kayttajanimi); ?>;
 
-
-                //var haku = <?php echo json_encode(serialize(array("nimi" => "make", "ika" => "23"))) ?>;
-                //var haku = "jahuu";
-
                 $.post("suodata.php",
                         {
                             haku: {
@@ -213,13 +176,16 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
                         },
                 function(data) {
                     $("#ravinnon_saannit").html(data);
+
+                    //alert(data);
                     var time_end = microtime(true);
                     //alert("Hakuun kului aikaa: " + (time_end - time_start));
                 });
             }
         </script>
 
-        <script>
+		
+		        <script>
             $(document).ready(function() {
                 $("#suodata_ravinnon_saanti_button").click(function() {
                     suodata_ravinnon_saanti();
@@ -227,8 +193,7 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
                 });
             });
         </script>
-
-        <script>
+		        <script>
             $(function() {
                 $("#from").datepicker({
                     defaultDate: "+0w",
@@ -256,7 +221,50 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
                 var loppu = new Date();
                 $("#to").datepicker("setDate", loppu);
             });
+
+		</script>
+        <script>
+            $(document).ready(function() {
+
+                $("#dialogi").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    draggable: true,
+                    width: 600,
+                    buttons: {"Lisää": function() {
+
+
+                            var form = $("#uusiAjax").serialize();
+                            var jee = "Jee";
+
+                            $.post("lisaa_r.php", form, function(data) {
+                                alert(data);
+                                //$("#testi").html(data);
+                                suodata_ravinnon_saanti();
+
+                                $("#uusiAjax")[0].reset();
+                            }
+                            );
+
+
+                            $(this).dialog("close");
+                        }, "Peruuta": function() {
+                            $("#uusiAjax")[0].reset();
+                            $(this).dialog("close");
+                        }
+                    },
+                    title: "Lisää uusi ravinnon saanti",
+                    show: {effect: 'clip', direction: "up"}
+
+                });
+                $("#lisaa").click(function() {
+                    $("#dialogi").dialog('open');
+                });
+
+            });
         </script>
+
+
     </body>
 </html>
 

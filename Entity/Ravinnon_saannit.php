@@ -7,10 +7,12 @@ use Liikka\Entity\Ravinto;
 use Liikka\Entity\Tyyppi;
 use Liikka\Entity\ApuMetodit;
 
-include_once 'Ravinto.php';
-include_once 'Ravinnon_saanti.php';
-include_once 'Tyyppi.php';
-include_once 'ApuMetodit.php';
+
+include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity//Ravinnon_saanti.php";
+include_once $_SERVER['DOCUMENT_ROOT']."//Liikka/Entity//ApuMetodit.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Tyyppi.php";
+include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
+
 
 /*
  * To change this template, choose Tools | Templates

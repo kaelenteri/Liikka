@@ -3,6 +3,7 @@
 namespace Liikka\Entity;
 
 use Liikka\Entity\Ravinto;
+$_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinto.php";
 
 /*
  * To change this template, choose Tools | Templates

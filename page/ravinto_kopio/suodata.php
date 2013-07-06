@@ -1,12 +1,13 @@
 <?php
 
+
 use Liikka\Entity\Ravinnon_saannit;
 
-include_once $_SERVER['DOCUMENT_ROOT']."/Liikka/Entity/Ravinnon_saannit.php";
+$f1 = stream_resolve_include_path('../../Entity/Ravinnon_saannit.php');
+include_once $f1;
 
-//echo $_POST['haku'];
 $haku = $_POST['haku'];
-//var_dump($haku);
+
 $rst = new Ravinnon_saannit();
 
 
@@ -32,9 +33,9 @@ if (count($rst->getRavinnon_saannit()) > 0) {
     echo "<th>Kalorit</th>";
     echo "<th>Kommentti</th>";
     echo "</tr>";
-
-
-    foreach ($rst->getRavinnon_saannit() as /* @var $rs Ravinnon_saanti */ $rs) {
+/* @var $rs Ravinnon_saanti */
+$joo = $rst->getRavinnon_saannit();
+    foreach ($joo as  $rs) {
         
         $kalorit = $rs->getMaara() * $rs->getRavinto()->getKalorit() / 100;
         $yht_kalorit += $kalorit;
@@ -74,3 +75,4 @@ if (count($rst->getRavinnon_saannit()) > 0) {
 } else {
     echo "<p style=\"color: red\">Ei tuloksia valitulle haulle. Muuta suodatusta.</p>";
 }
+?>

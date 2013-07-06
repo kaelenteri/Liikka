@@ -4,7 +4,7 @@ date_default_timezone_set('Europe/Helsinki');
 
 use Liikka\Entity\Laji;
 
-include "../../Entity/Laji.php";
+include stream_resolve_include_path("../../Entity/Laji.php");
 
 session_start();
 if (!isset($_SESSION['kayttajanimi']) || !isset($_SESSION['kirjautunut']) || $_SESSION['kirjautunut'] == false) {
