@@ -49,7 +49,7 @@ if (mysqli_num_rows($tulos) > 0) {
 
 
     $liikuntasuoritukset = "
-            <table id =\"liikuntasuoritukset\">
+            <table id =\"tulokset\">
             <tr>
             <th>Päivämäärä</th>
             <th>Laji</th>

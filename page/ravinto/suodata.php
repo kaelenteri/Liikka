@@ -22,7 +22,7 @@ if (count($rst->getRavinnon_saannit()) > 0) {
     $yht_kalorit = 0;
 //var_dump($rst);
 // luodaan table ravinnon saanneista
-    echo "<table id=\"ravinnon_saannit_table\">";
+    echo "<table id=\"tulokset\">";
     echo "<tr>";
     echo "<th>Pvm</th>";
     echo "<th>Tyyppi</th>";

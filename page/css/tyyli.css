@@ -8,8 +8,8 @@
 
 root { 
     display: block;
-    
-    
+
+
 }
 
 .kayttajataulukko{
@@ -25,22 +25,27 @@ root {
 }
 .user:hover{
     background-color: #3399ff;
-    
-}
-#liikuntasuoritukset table{
-    width: 600px;
+
 }
 
-#liikuntasuoritukset td{
+
+#tulokset td{
     border: 1px solid #0099ff;
     padding: 3px;
 }
 
-#liikuntasuoritukset{
+#tulokset{
     border-spacing: 0px;
+    min-width: 600px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border-width: 5px;
+    border-style: groove;
+    
 }
 
-#liikuntasuoritukset th{
+#tulokset th{
     background-color: #0099ff;
     border: 1px solid black;
     padding: 3px;

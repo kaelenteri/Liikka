@@ -2,11 +2,14 @@
 
 
 use Liikka\Entity\Laji;
+use Liikka\Entity\Lajit;
 
 include stream_resolve_include_path("../../Entity/Laji.php");
+include stream_resolve_include_path("../../Entity/Lajit.php");
 
 include_once $_SERVER['DOCUMENT_ROOT'] . "/Liikka/page/osiot/tarkista_kirjautuminen.php";
-
+$s = "moi";
+printf("<p>[%10s]</p>",$s);
 $kayttajanimi = $_SESSION['kayttajanimi'];
 ?>
 <!DOCTYPE html>
@@ -29,24 +32,10 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
         <br />
 
         <?php
-        $conn = mysqli_connect('localhost', 'make', 'toppi', 'liikka', '3306');
-        if (!$conn) {
-            die('Could not connect to MySQL: ' . mysqli_connect_error());
-        }
-        $lajit_tulos = mysqli_query($conn, 'SELECT * FROM laji');
-        $lajit = array();
-        while ($rivi = mysqli_fetch_array($lajit_tulos)) {
-            $laji = new Laji($rivi['id'], $rivi['nimi'], $rivi['kulutus'], $rivi['kommentti']);
-            array_push($lajit, $laji);
-        }
+        $lajit = new Lajit();
+        $lajit->alusta();
 
-        mysqli_close($conn);
 
-        function sortLajit($a, $b) {
-            return strcmp($a->getNimi(), $b->getNimi());
-        }
-
-        usort($lajit, "sortLajit");
 
 
         echo "Käyttäjän $kayttajanimi liikuntasuoritukset.";
@@ -95,9 +84,9 @@ $kayttajanimi = $_SESSION['kayttajanimi'];
                 <select id ="laji" style="width: 100%">
                     <option value="-1">Kaikki lajit</option>
                     <?php
-                    foreach ($lajit as $laji) {
-                        //TODO: Tähän muokataan drop-valikossa näkyviä lajin tietoja
-                        echo "<option value =\"" . $laji->getID() . "\">" . $laji->getNimi() . "</option>";
+                    foreach ($lajit->getLajit() as /* @var $laji Laji */ $laji) {
+                        //todo Tähän muokataan drop-valikossa näkyviä lajin tietoja
+                        echo "<option value =\"" . $laji->getID() . "\">" . sprintf("%20s", $laji->getNimi()) .": ".$laji->getKommentti(). "</option>";
                     }
                     ?>
                 </select>

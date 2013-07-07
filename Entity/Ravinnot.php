@@ -88,12 +88,8 @@ class Ravinnot {
         }
 
         while ($rivi = mysqli_fetch_array($tulos)) {
-            $tyyppi = Tyypit::hae($rivi['rt_id']);
-            if ($tyyppi == null){
-                die("Ei voitu hakea ravinnon tyyppiä. Tietokannassa on joku rikki. Ota yhteyttä järjestelmänvalvojaan.");
-            }
-            $ravinto = new Ravinto(
-                    $rivi['r_id'], $rivi['r_nimi'], $tyyppi, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
+            $tyyppi = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
+            $ravinto = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $tyyppi, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
 
             array_push($this->ravinnot, $ravinto);
         }

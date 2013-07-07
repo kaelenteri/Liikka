@@ -98,9 +98,9 @@ class Ravinnon_saannit {
 
         while ($rivi = $tulos->fetch_array(MYSQLI_ASSOC)) {
             //$rt = Tyypit::hae($rivi['rt_id']);
-            $r = Ravinnot::etsi($rivi['rt_id']);
-            //$rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
-            //$r = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $rt, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
+            //$r = Ravinnot::etsi($rivi['rt_id']);
+            $rt = new Tyyppi($rivi['rt_id'], $rivi['rt_nimi'], $rivi['rt_mittayksikko'], $rivi['rt_gr_ml']);
+            $r = new Ravinto($rivi['r_id'], $rivi['r_nimi'], $rt, $rivi['r_kalorit'], $rivi['r_merkki'], $rivi['r_kommentti']);
             $rs = new Ravinnon_saanti($rivi['rs_id'], $rivi['rs_kayttajanimi'], $rivi['rs_pvm'], $r, $rivi['rs_maara'], $rivi['rs_kommentti']);
 
             array_push($this->ravinnon_saannit, $rs);
